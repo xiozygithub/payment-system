@@ -609,6 +609,15 @@ public class CpcnMessageService {
      * 查询往来账明细(当前日期)[T9007]请求
      * @param request
      * @return
+     *  buildTrdT9007Request字段含义
+     * sign：一个布尔值，指示请求是否已被签名。
+     * ROOT：常量，表示消息的根元素，这里固定为“MSG”。
+     * msg_version：消息版本号，这里默认为“1.5”。
+     * msghd_trdt：消息头部的交易日期。
+     * msghd_trtm：消息头部的交易时间。
+     * msghd_trsrc：消息来源，这里固定为“F”。
+     * msghd_bkcd：银行代码或者某种机构代码。
+     * srl_ptnsrl：合作伙伴序列号或特定的请求序列号
      */
     public TrdT9007Request buildTrdT9007Request(AccountDetailsRequest request) {
 

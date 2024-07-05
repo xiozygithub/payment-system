@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentChannelApplicationService {
 
+    //翻译：转账账户路由策略上下文
     @Autowired
     private TransferAccountRouteStrategyContext transferAccountRouteStrategyContext;
 

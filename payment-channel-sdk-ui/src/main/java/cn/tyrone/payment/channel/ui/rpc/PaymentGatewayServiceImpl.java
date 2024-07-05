@@ -1,12 +1,11 @@
 package cn.tyrone.payment.channel.ui.rpc;
-
-
 import cn.tyrone.payment.channel.application.PaymentChannelApplicationService;
 import cn.tyrone.payment.channel.common.entity.TransferAccountRequest;
 import cn.tyrone.payment.channel.common.entity.TransferAccountResponse;
 import cn.tyrone.payment.channel.rpc.IPaymentGatewayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class PaymentGatewayServiceImpl implements IPaymentGatewayService {

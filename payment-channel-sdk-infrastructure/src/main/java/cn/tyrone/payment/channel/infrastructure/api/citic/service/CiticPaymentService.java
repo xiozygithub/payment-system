@@ -17,38 +17,107 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
+/**
+ * 参数String requestMessage大致内容：
+ * xml格式
+ * <Request>
+ *     <Head>
+ *         <Version>1.0</Version>
+ *         <TransCode>DLBREGSN</TransCode>
+ *         <MerId>YOUR_MERCHANT_ID</MerId>
+ *         <Date>TRANSACTION_DATE</Date>
+ *         <Time>TRANSACTION_TIME</Time>
+ *         <RequestId>SOME_UNIQUE_REQUEST_ID</RequestId>
+ *         <Signature>SIGNATURE_DATA</Signature>
+ *     </Head>
+ *     <Body>
+ *         <MemberInfo>
+ *             <CustName>MEMBER_NAME</CustName>
+ *             <CustType>CUSTOMER_TYPE</CustType>
+ *             <Cust证件类型>ID_TYPE</Cust证件类型>
+ *             <Cust证件号码>ID_NUMBER</Cust证件号码>
+ *             <CustMobile>MOBILE_PHONE</CustMobile>
+ *             <CustEmail>EMAIL_ADDRESS</CustEmail>
+ *             <!-- 其他必要的会员信息 -->
+ *         </MemberInfo>
+ *     </Body>
+ * </Request>
+ *
+ * sjon格式：
+ * {
+ *   "head": {
+ *     "version": "1.0",
+ *     "transCode": "DLBREGSN",
+ *     "merId": "YOUR_MERCHANT_ID",
+ *     "date": "TRANSACTION_DATE",
+ *     "time": "TRANSACTION_TIME",
+ *     "requestId": "SOME_UNIQUE_REQUEST_ID",
+ *     "signature": "SIGNATURE_DATA"
+ *   },
+ *   "body": {
+ *     "memberInfo": {
+ *       "custName": "MEMBER_NAME",
+ *       "custType": "CUSTOMER_TYPE",
+ *       "custIdType": "ID_TYPE",
+ *       "custIdNumber": "ID_NUMBER",
+ *       "custMobile": "MOBILE_PHONE",
+ *       "custEmail": "EMAIL_ADDRESS"
+ *       // 其他必要的会员信息字段
+ *     }
+ *   }
+ * }
+ *
+ * 实际上就是xml格式，由DlbregsnRequest类生产
+ *
+ * 中信银行发送报文过程
+ *
+ * @param
+ * @param
+ * @return
+ * @throws IOException
+ * @throws DocumentException
+ */
 @Slf4j
 @Service
 public class CiticPaymentService {
 
     /**
-     * 中信银行发送报文过程
-     *
+     * execute方法接收请求消息（XML格式的报文字符串）和支付通道配置，根据配置的前置应用地址建立网络连接，
+     * 并将请求报文通过这个连接发送到银行服务器。它处理了网络连接的建立、超时设置、以及请求报文的发送过程。
      * @param requestMessage
      * @param paymentChannelConfig
      * @return
-     * @throws IOException
-     * @throws DocumentException
+     * @throws Exception
      */
     private String execute(String requestMessage, PaymentChannelConfig paymentChannelConfig) throws Exception {
 
+
         Map<String, Object> channelConfig = paymentChannelConfig.getChannelConfig();
 
-        // 前置应用地址
+        // 前置应用地址//从支付通道配置中提取前置应用的URL地址，这是请求的目标地址。
         String preApplicaionUrl = String.valueOf(channelConfig.get("pre_applicaion_url"));
 
+        //使用提取的URL创建URL对象，进而建立到银行服务器的网络连接。
         URL sendUrl = new URL(preApplicaionUrl.trim());
         URLConnection connection = sendUrl.openConnection();
 
-        connection.setConnectTimeout(30000);
-        connection.setReadTimeout(30000);
-        connection.setDoOutput(true);
 
+        //设置连接参数:
+        connection.setConnectTimeout(30000); // 连接超时时间设置
+        connection.setReadTimeout(30000); // 读取超时时间设置
+        connection.setDoOutput(true); // 设置为输出模式，允许写入请求体
+
+
+        //发送请求报文:
+        //通过输出流，使用指定的字符集（GBK）将请求报文写入连接，并确保数据已发送。
+        //connection.getOutputStream() 得到一个字节输出流，它代表了到服务器的输出通道。
+        //new OutputStreamWriter 是将字节输出流转换为了字符输出流，以便于以指定的字符编码写入字符串。
         OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "GBK");
         out.write(requestMessage);
         out.flush();
         out.close();
 
+        //接收响应并解析
         // 一旦发送成功，用以下方法就可以得到服务器的回应：
         InputStream inputStream = connection.getInputStream();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "GBK");

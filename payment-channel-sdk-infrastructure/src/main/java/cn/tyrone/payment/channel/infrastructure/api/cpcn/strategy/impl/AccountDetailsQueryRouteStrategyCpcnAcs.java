@@ -35,8 +35,7 @@ public class AccountDetailsQueryRouteStrategyCpcnAcs implements AccountDetailsQu
         if (!ifToday) {
             accountDetailResponse = paymentServiceAdapter.accountDetailHistory(request);
         }
-
         return accountDetailResponse;
-    }
 
+    }
 }

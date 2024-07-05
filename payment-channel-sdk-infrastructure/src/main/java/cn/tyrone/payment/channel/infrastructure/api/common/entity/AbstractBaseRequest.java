@@ -58,10 +58,12 @@ public abstract class AbstractBaseRequest {
         Optional<String> elementTextOptional = Optional.ofNullable(elementText);
         if (ifMust) {
 
+            //isPresent(),存在非空值是返回true
             if (!elementTextOptional.isPresent() || "".equals(elementText)) {
                 throw new RuntimeException("节点" + elementName + "不允许为空");
             }
             element = "<" + elementName + ">" + elementText + "</" + elementName + ">";
+            //// 输出可能是：<Amount>100.00</Amount>
         }
 
         if (!ifMust) {
@@ -70,6 +72,7 @@ public abstract class AbstractBaseRequest {
                 elementText = "";
             }
             element = "<" + elementName + ">" + elementText + "</" + elementName + ">";
+            // 输出可能是：<Remark></Remark>
         }
 
         return element;

@@ -8,6 +8,11 @@ import java.util.List;
 /**
  * 会员注册
  */
+
+/**
+ * 会员注册,
+ * 构建请求报文
+ */
 @Data
 @SuperBuilder
 public class DlbregsnRequest extends AbstractCiticBaseRequest {
@@ -134,6 +139,41 @@ public class DlbregsnRequest extends AbstractCiticBaseRequest {
     private List<VilcstData> vilcstDataList;
 
 
+    /**
+     * <?xml version="1.0" encoding="GBK"?>
+     * <stream>
+     *     <action>Dlbregsn</action>
+     *     <userName>需要填入的用户名</userName>
+     *     <mainAccNo>需要填入的主体账号</mainAccNo>
+     *     <appFlag>2</appFlag>
+     *     <accGenType>1</accGenType>
+     *     <subAccNo>12345</subAccNo>
+     *     <subAccNm>Test Company</subAccNm>
+     *     <!-- 其他元素根据实际值和规则动态生成 -->
+     *     <accType>需要的账户类型代码</accType>
+     *     <!-- 根据appFlag的值，某些字段被强制设定或忽略 -->
+     *     <calInterestFlag>0</calInterestFlag>
+     *     <interestRate>0</interestRate>
+     *     <!-- 省略其他元素... -->
+     *     <mngNode>需要填入的会员确认中心</mngNode>
+     *     <vtlCustNm>需要填入的虚拟客户名称</vtlCustNm>
+     *     <legalPersonNm>需要填入的法人名称</legalPersonNm>
+     *     <custCertType>需要填入的客户证件类型代码</custCertType>
+     *     <custCertNo>需要填入的客户证件号码</custCertNo>
+     *     <branch>需要填入的所属机构</branch>
+     *     <commAddress>需要填入的通讯地址</commAddress>
+     *     <list name="VilcstDataList">
+     *         <!-- 这里会循环vilcstDataList，每个vilcstData调用自己的listProcessing方法添加到列表中 -->
+     *         <!-- 示例数据 -->
+     *         <vilcstData>
+     *             <!-- vilcstData的各个属性值 -->
+     *         </vilcstData>
+     *         <!-- 可能还有更多vilcstData项 -->
+     *     </list>
+     * </stream>
+     * @return
+     * @throws RuntimeException
+     */
     @Override
     public String processing() throws RuntimeException {
 

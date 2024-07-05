@@ -24,6 +24,7 @@ public class TransferAccountRouteStrategyContext {
     @Autowired
     private Map<String, TransferAccountRouteStrategy> transferAccountRouteStrategyMap = new ConcurrentHashMap<>();
 
+    //将构造参数中的map传递到成员变量中去
     public TransferAccountRouteStrategyContext(Map<String, TransferAccountRouteStrategy> transferAccountRouteStrategyMap) {
         this.transferAccountRouteStrategyMap.clear();
         transferAccountRouteStrategyMap.forEach(this.transferAccountRouteStrategyMap::put);
@@ -33,6 +34,7 @@ public class TransferAccountRouteStrategyContext {
         PaymentGatewayType paymentGatewayType = PaymentGatewayType.TRANSFER_ACCOUNT;
         ChannelConfigCode channelConfigCode = request.getChannelConfigCode();
 
+        //根据支付网关类型和渠道配置编码获取支付路由策略
         String strategyName = paymentRouteStrategyService.paymentRouteStrategy(paymentGatewayType, channelConfigCode);
 
         TransferAccountRouteStrategy transferAccountRouteStrategy = this.transferAccountRouteStrategyMap.get(strategyName);

@@ -45,15 +45,22 @@ public enum PaymentRouteStrategyConfig {
         this.desceibe = describe;
     }
 
+    //基于传入的paymentGatewayType和channelConfigCode参数，找到匹配的PaymentRouteStrategyConfig枚举项
+    // ，然后获取与之关联的路由策略实现类的简单类名（首字母小写）。
     public static String getRouteStrategyServiceName(
             PaymentGatewayType paymentGatewayType, ChannelConfigCode channelConfigCode) {
 
-        PaymentRouteStrategyConfig paymentRouteStrategyConfig1 = Arrays.stream(PaymentRouteStrategyConfig.values()).filter(paymentRouteStrategyConfig -> {
+        //通过比对两个参数，拿到第一个枚举值
+        PaymentRouteStrategyConfig paymentRouteStrategyConfig1 = Arrays.stream(
+                //返回枚举类中所有枚举项的数组
+                PaymentRouteStrategyConfig.values())
+                .filter(paymentRouteStrategyConfig -> {
             return paymentRouteStrategyConfig.paymentGatewayType.equals(paymentGatewayType) && paymentRouteStrategyConfig.channelConfigCode.equals(channelConfigCode);
         }).findFirst().get();
 
         Class cls = paymentRouteStrategyConfig1.routeStrategyImplClass;
         String simpleName = cls.getSimpleName();
+        //拿到类名的第一个字母进行小写，第二个到末尾的字符拼接起来。得到类名的全小写字符串
         simpleName = simpleName.substring(0, 1).toLowerCase() + simpleName.substring(1);
         return simpleName;
     }

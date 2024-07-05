@@ -33,6 +33,7 @@ public class AccountDetailsQueryRouteStrategyContext {
         PaymentGatewayType paymentGatewayType = PaymentGatewayType.ACCOUNT_DETAILS_QUERY;
         ChannelConfigCode channelConfigCode = request.getChannelConfigCode();
 
+        //拿到路由策略类名
 //        String strategyName = PaymentRouteStrategyConfig.getRouteStrategyServiceName(paymentGatewayType, channelConfigCode);
         String strategyName = paymentRouteStrategyService.paymentRouteStrategy(paymentGatewayType, channelConfigCode);
 

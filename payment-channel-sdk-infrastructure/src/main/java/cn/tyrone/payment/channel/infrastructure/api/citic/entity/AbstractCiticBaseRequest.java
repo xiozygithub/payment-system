@@ -33,6 +33,7 @@ public abstract class AbstractCiticBaseRequest extends AbstractBaseRequest {
 
     protected String actionProcessing() throws RuntimeException {
         String action = "<action>" + this.citicAction.getAction() + "</action>";
+        //如果citicAction.getAction()返回值为"queryBalance"，则执行此方法将得到<action>queryBalance</action>这样的字符串。
         return action;
     }
 
@@ -40,6 +41,7 @@ public abstract class AbstractCiticBaseRequest extends AbstractBaseRequest {
     protected String statementProcessing() throws RuntimeException {
 
         String statement = "<?xml version=\"1.0\" encoding=\"GBK\"?>";
+        //<?xml version="1.0" encoding="GBK"?>
 
         return statement;
     }

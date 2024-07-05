@@ -11,6 +11,7 @@ public class PaymentRouteStrategyServiceImpl implements IPaymentRouteStrategySer
 
     /**
      * 根据支付网关类型和渠道配置编码获取支付路由策略
+     * 就是根据支付网关类型和渠道配置编码，拿到对应的路由策略类对象的全小写字符串
      * @param paymentGatewayType
      * @param channelConfigCode
      * @return
